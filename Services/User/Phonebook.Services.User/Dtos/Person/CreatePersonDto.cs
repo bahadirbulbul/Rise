@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Phonebook.Services.User.Dtos
+﻿namespace Phonebook.Services.User.Dtos
 {
     internal class CreatePersonDto
     {
@@ -12,3 +7,5 @@ namespace Phonebook.Services.User.Dtos
         public string CompanyName { get; set; }
     }
 }
+
+

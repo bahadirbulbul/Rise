@@ -12,5 +12,6 @@ namespace Phonebook.Services.User.Services
         Task<ResponseDto<List<PersonDto>>> GetAllAsync();
         Task<ResponseDto<CreatePersonDto>> CreateAsync(CreatePersonDto person);
         Task<ResponseDto<PersonDto>> GetByIdAsync(string uuid);
+        Task<ResponseDto<PersonDto>> DeleteByIdAsync(string uuid);
     }
 }

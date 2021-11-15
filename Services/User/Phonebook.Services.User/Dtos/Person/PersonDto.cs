@@ -11,6 +11,6 @@ namespace Phonebook.Services.User.Dtos
         public string Name { get; set; }
         public string Surname { get; set; }
         public string CompanyName { get; set; }
-        public List<PersonContactDto> Contacts { get; set; }
+        public List<PersonContactDto> PersonContacts { get; set; }
     }
 }

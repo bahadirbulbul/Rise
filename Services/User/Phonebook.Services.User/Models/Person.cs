@@ -12,7 +12,8 @@ namespace Phonebook.Services.User.Models
         public string Surname { get; set; }
         public string CompanyName { get; set; }
 
-        public ICollection<PersonContact> Contacts { get; set; }
+        [BsonIgnore]
+        public ICollection<PersonContact> PersonContacts { get; set; }
 
     }
 }
