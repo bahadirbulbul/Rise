@@ -29,6 +29,8 @@ namespace Phonebook.Services.User
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IPersonService, PersonService>();
+            services.AddScoped<IPersonContactService, PersonContactService>();
+
             services.AddAutoMapper(typeof(Startup));
             services.Configure<DBSettings>(Configuration.GetSection("DBSettings"));
             services.AddSingleton<IDBSettings>(s =>

@@ -10,7 +10,8 @@ namespace Phonebook.Services.User.Services
     interface IPersonContactService
     {
         Task<ResponseDto<PersonContactDto>> DeleteAllByPersonIdAsync(string personUUID);
-        Task<ResponseDto<PersonContactDto>> DeleteByIdAsync(string uuid); 
-        Task<ResponseDto<CreatePersonContactDto>> CreateAsync(CreatePersonContactDto personContact)
+        Task<ResponseDto<PersonContactDto>> DeleteByIdAsync(string uuid);
+        Task<ResponseDto<CreatePersonContactDto>> CreateAsync(CreatePersonContactDto personContact);
+        Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUID(string personUUID);
     }
 }

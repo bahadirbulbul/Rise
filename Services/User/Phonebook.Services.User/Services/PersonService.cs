@@ -17,7 +17,7 @@ namespace Phonebook.Services.User.Services
         private readonly IMapper _mapper;
         private readonly IPersonContactService _personContactService;
 
-        public PersonService(IMapper mapper, IDBSettings dbSettings, IPersonContactService personContactService)
+        internal PersonService(IMapper mapper, IDBSettings dbSettings, IPersonContactService personContactService)
         {
             var client = new MongoClient(dbSettings.ConnectionString);
             var db = client.GetDatabase(dbSettings.DatabaseName);
@@ -50,25 +50,33 @@ namespace Phonebook.Services.User.Services
             {
                 return ResponseDto<PersonDto>.Fail("Kişi bulunamadı", 404);
             }
+            var personDTO = _mapper.Map<PersonDto>(person);
 
-            return ResponseDto<PersonDto>.Success(_mapper.Map<PersonDto>(person), 200);
+            //person'a ait iletişim bilgilerini getir. eğer iletişim bilgisi yoksa boş liste ata; varsa doldur.
+            var personContacts = await _personContactService.GetAllByPersonUUID(uuid);
+            if (personContacts.StatusCode != 200)
+                personDTO.PersonContacts = new List<PersonContactDto>();
+            else
+                personDTO.PersonContacts = _mapper.Map<List<PersonContactDto>>(personContacts);
+
+            return ResponseDto<PersonDto>.Success(personDTO, 200);
         }
 
         //Rehberden kişi kaldırma
-        public async Task<ResponseDto<PersonDto>> DeleteByIdAsync(string uuid)
+        public async Task<ResponseDto<NoContent>> DeleteByIdAsync(string uuid)
         {
-            var person = await _personCollection.Find<Person>(x => x.UUID == uuid).FirstOrDefaultAsync();
+            var person = await _personCollection.FindAsync<Person>(x => x.UUID == uuid);
             if (person == null)
             {
-                return ResponseDto<PersonDto>.Fail("Kişi bulunamadı", 404);
+                return ResponseDto<NoContent>.Fail("Kişi bulunamadı", 404);
             }
             //person'a ait iletişim bilgileri siliniyor...
             var deleteContactResult = await _personContactService.DeleteAllByPersonIdAsync(uuid);
 
             //person kaydı siliniyor
-            var deleteResult = await _personCollection.DeleteOneAsync(person.UUID);
+            var deleteResult = await _personCollection.DeleteOneAsync(s => s.UUID == uuid);
 
-            return ResponseDto<PersonDto>.Success(_mapper.Map<PersonDto>(person), 200);
+            return ResponseDto<NoContent>.Success(200);
         }
     }
 }

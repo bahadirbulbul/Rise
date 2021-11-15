@@ -45,7 +45,7 @@ namespace Phonebook.Services.User.Services
 
         public async Task<ResponseDto<PersonContactDto>> DeleteAllByPersonIdAsync(string personUUID)
         {
-            var personContants = _personContactCollection.Find(s => s.PersonID == personUUID);
+            var personContants = await _personContactCollection.FindAsync(s => s.PersonID == personUUID);
 
             if (personContants == null)
             {
@@ -55,7 +55,17 @@ namespace Phonebook.Services.User.Services
             var deleteResult = await _personContactCollection.DeleteManyAsync(s => s.PersonID == personUUID);
 
             return ResponseDto<PersonContactDto>.Success(200);
+        }
+        public async Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUID(string personUUID)
+        {
+            var personContants = await _personContactCollection.FindAsync<PersonContact>(s => s.PersonID == personUUID);
 
+            if (personContants == null)
+            {
+                return ResponseDto<List<PersonContactDto>>.Fail(personUUID + "ID'i kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
+            }
+
+            return ResponseDto<List<PersonContactDto>>.Success(_mapper.Map<List<PersonContactDto>>(personContants), 200);
         }
     }
 }
