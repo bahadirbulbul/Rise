@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Phonebook.Services.User.Dtos;
 using Phonebook.Services.User.Models;
+using System.Collections.Generic;
 
 namespace Phonebook.Services.User.Mappings
 {

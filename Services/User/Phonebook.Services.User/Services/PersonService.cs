@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Services
 {
-    internal class PersonService : IPersonService
+    public class PersonService : IPersonService
     {
         private readonly IMongoCollection<Person> _personCollection;
         private readonly IMapper _mapper;
         private readonly IPersonContactService _personContactService;
 
-        internal PersonService(IMapper mapper, IDBSettings dbSettings, IPersonContactService personContactService)
+        public PersonService(IMapper mapper, IDBSettings dbSettings, IPersonContactService personContactService)
         {
             var client = new MongoClient(dbSettings.ConnectionString);
             var db = client.GetDatabase(dbSettings.DatabaseName);
@@ -57,8 +57,8 @@ namespace Phonebook.Services.User.Services
             if (personContacts.StatusCode != 200)
                 personDTO.PersonContacts = new List<PersonContactDto>();
             else
-                personDTO.PersonContacts = _mapper.Map<List<PersonContactDto>>(personContacts);
-
+                personDTO.PersonContacts = personContacts.Data;
+            
             return ResponseDto<PersonDto>.Success(personDTO, 200);
         }
 

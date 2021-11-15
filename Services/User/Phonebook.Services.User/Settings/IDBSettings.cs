@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Settings
 {
-    internal interface IDBSettings
+    public interface IDBSettings
     {
         public string PersonCollectionName { get; set; }
         public string PersonContactCollectionName { get; set; }

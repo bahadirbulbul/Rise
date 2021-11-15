@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Services
 {
-    interface IPersonContactService
+    public interface IPersonContactService
     {
         Task<ResponseDto<PersonContactDto>> DeleteAllByPersonIdAsync(string personUUID);
         Task<ResponseDto<PersonContactDto>> DeleteByIdAsync(string uuid);

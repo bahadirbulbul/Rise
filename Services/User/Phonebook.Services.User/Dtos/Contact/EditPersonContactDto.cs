@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Dtos
 {
-    internal class EditPersonContactDto
+    public class EditPersonContactDto
     {
-        public string ID { get; set; }
+        public string UUID { get; set; }
+        public string PersonID { get; set; }
         public string ContactType { get; set; }
         public string Description { get; set; }
     }

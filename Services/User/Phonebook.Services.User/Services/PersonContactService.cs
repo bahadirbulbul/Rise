@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Services
 {
-    internal class PersonContactService : IPersonContactService
+    public class PersonContactService : IPersonContactService
     {
         private readonly IMongoCollection<PersonContact> _personContactCollection;
         private readonly IMapper _mapper;
@@ -34,6 +34,7 @@ namespace Phonebook.Services.User.Services
         public async Task<ResponseDto<PersonContactDto>> DeleteByIdAsync(string uuid)
         {
             var personContact = await _personContactCollection.Find<PersonContact>(x => x.UUID == uuid).FirstOrDefaultAsync();
+
             if (personContact == null)
             {
                 return ResponseDto<PersonContactDto>.Fail("İletişim bilgisi bulunamadı", 404);
@@ -58,14 +59,23 @@ namespace Phonebook.Services.User.Services
         }
         public async Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUID(string personUUID)
         {
-            var personContants = await _personContactCollection.FindAsync<PersonContact>(s => s.PersonID == personUUID);
-
-            if (personContants == null)
+            try
             {
-                return ResponseDto<List<PersonContactDto>>.Fail(personUUID + "ID'i kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
-            }
+                var personContacts = await _personContactCollection.Find(s => s.PersonID == personUUID).ToListAsync();
 
-            return ResponseDto<List<PersonContactDto>>.Success(_mapper.Map<List<PersonContactDto>>(personContants), 200);
+                if (personContacts == null)
+                {
+                    return ResponseDto<List<PersonContactDto>>.Fail(personUUID + "ID'i kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
+                }
+
+                return ResponseDto<List<PersonContactDto>>.Success(_mapper.Map<List<PersonContactDto>>(personContacts), 200);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

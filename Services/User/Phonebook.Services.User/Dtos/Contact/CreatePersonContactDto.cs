@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Dtos
 {
-    internal class CreatePersonContactDto
+    public class CreatePersonContactDto
     {
         public string PersonID { get; set; }
         public string ContactType { get; set; }

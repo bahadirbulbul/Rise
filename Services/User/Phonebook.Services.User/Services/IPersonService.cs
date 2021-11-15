@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Services
 {
-    interface IPersonService
+    public interface IPersonService
     {
         Task<ResponseDto<List<PersonDto>>> GetAllAsync();
         Task<ResponseDto<CreatePersonDto>> CreateAsync(CreatePersonDto person);
