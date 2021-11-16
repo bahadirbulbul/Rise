@@ -24,10 +24,10 @@ namespace Phonebook.Services.Report.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto<List<ReportDto>>> GetAllAsync()
-        {
+        //public async Task<ResponseDto<List<ReportDto>>> GetAllAsync()
+        //{
             //var reports = await _reportCollection.Find(Models.Report => true).ToListAsync();
             //return ResponseDto<List<ReportDto>>.Success(_mapper.Map<List<ReportDto>>(reports), 200);
-        }
+        //}
     }
 }
