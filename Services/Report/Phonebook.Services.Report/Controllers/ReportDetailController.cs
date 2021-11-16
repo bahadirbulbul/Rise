@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Phonebook.Services.Report.Services;
 using Phonebook.Shared.ControllerBases;
+using Phonebook.Shared.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.Report.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ReportDetailController : BaseController
     {
@@ -21,9 +22,10 @@ namespace Phonebook.Services.Report.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDetails(string uuid)
+        public async Task<IActionResult> GetDetails()
         {
-            return CreateActionResultInstance(await _reportDetailService.GetDetailsByReportId(uuid));
+            _reportDetailService.PrepareReportData();
+            return CreateActionResultInstance(new ResponseDto<bool>());
         }
     }
 }

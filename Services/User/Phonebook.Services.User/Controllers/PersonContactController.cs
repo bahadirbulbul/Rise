@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class PersonContactController : BaseController
     {
@@ -48,6 +48,11 @@ namespace Phonebook.Services.User.Controllers
             var response = await _personContactService.DeleteAllByPersonIdAsync(personUUID);
             return CreateActionResultInstance(response);
         }
-
+        [HttpGet]
+        public async Task<IActionResult> GetReportData()
+        {
+            var reportData = await _personContactService.PrepareReportData();
+            return CreateActionResultInstance(reportData);
+        }
     }
 }

@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using Phonebook.Services.Report.Dtos;
 using Phonebook.Services.Report.Settings;
 using Phonebook.Shared.Dtos;
+using Phonebook.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.Report.Services
 {
-    public class ReportService :IReportService
+    public class ReportService : IReportService
     {
         private readonly IMongoCollection<Models.Report> _reportCollection;
         private readonly IMapper _mapper;
@@ -29,5 +30,21 @@ namespace Phonebook.Services.Report.Services
             var reports = await _reportCollection.Find(Report => true).ToListAsync();
             return ResponseDto<List<ReportDto>>.Success(_mapper.Map<List<ReportDto>>(reports), 200);
         }
+
+        public async Task<ResponseDto<ReportDto>> CreateAsync()
+        {
+            var model = new Models.Report
+            {
+                Date = DateTime.Now,
+                Status = ReportStatusEnum.Hazırlanıyor.ToString()
+            };
+            await _reportCollection.InsertOneAsync(model);
+
+            var reportCreateResult = await _reportCollection.FindAsync(s => s.Date == model.Date);
+
+            return ResponseDto<ReportDto>.Success(_mapper.Map<ReportDto>(reportCreateResult), 200);
+        }
+
+
     }
 }

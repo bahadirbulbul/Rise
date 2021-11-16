@@ -10,5 +10,7 @@ namespace Phonebook.Services.Report.Services
     public interface IReportDetailService
     {
         Task<ResponseDto<List<ReportDetailDto>>> GetDetailsByReportId(string uuid);
+        void PrepareReportData();
+        Task<ResponseDto<NoContent>> CreateAsync(string reportUUID);
     }
 }

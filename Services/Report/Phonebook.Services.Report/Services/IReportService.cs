@@ -10,5 +10,6 @@ namespace Phonebook.Services.Report.Services
     public interface IReportService
     {
         Task<ResponseDto<List<ReportDto>>> GetAllAsync();
+        Task<ResponseDto<ReportDto>> CreateAsync();
     }
 }

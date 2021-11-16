@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,17 +29,36 @@ namespace Phonebook.Services.Report
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region RabbitMQ
+            services.AddMassTransit(s =>
+            {
+                s.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
+                    {
+                        host.Username("guest");
+                        host.Password("guest");
+                    });
+                });
+            });
+            services.AddMassTransitHostedService();
+            #endregion
+
+            #region DI
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IReportDetailService, ReportDetailService>();
+            #endregion
 
-            services.AddAutoMapper(typeof(Startup));
+            #region DB
             services.Configure<DBSettings>(Configuration.GetSection("DBSettings"));
             services.AddSingleton<IDBSettings>(s =>
             {
                 return s.GetRequiredService<IOptions<DBSettings>>().Value;
             });
+            #endregion
 
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Phonebook.Services.Report", Version = "v1" });

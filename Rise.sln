@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phonebook.Services.Report",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{1C415E4E-2B14-45E0-AB12-B364A21F0F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phonebook.Gateway", "Gateways\Phonebook.Gateway\Phonebook.Gateway.csproj", "{C6FBD83A-53E2-4329-B233-686D9C422254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phonebook.Gateway", "Gateways\Phonebook.Gateway\Phonebook.Gateway.csproj", "{C6FBD83A-53E2-4329-B233-686D9C422254}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -75,7 +75,40 @@ namespace Phonebook.Services.User.Services
 
                 throw;
             }
-           
+        }
+
+        public async Task<ResponseDto<ContactReportDto>> PrepareReportData()
+        {
+            //DTO rapor datası ile doldurulacak.
+            var dto = new ContactReportDto();
+
+            //Konum bilgisi bulunan iletişim bilgileri.
+            var list = await _personContactCollection.Find(s => s.ContactType == "Location").ToListAsync();
+
+            var userCount = list.Select(s => s.PersonID).Distinct().Count();
+            var GSMCount = list.Where(s => s.ContactType == "GSM").Count();
+            //var result = _personContactCollection.Aggregate()
+            //            .Group(
+            //                x => x.ContactType == "Konum",
+            //                g => new
+            //                {
+            //                    Result = g.Sum(
+            //                               x => x.ContactType == "GSM".Count()
+            //                               ).Max(),
+
+            //                    g.Select(y => y.ContactType == "GSM").ToList().Count()
+            //                }
+            //            ).ToList();
+
+            //result.ForEach(doc => Console.WriteLine(doc.ToJson()));
+
+
+
+            //foreach (var item in collection)
+            //{
+
+            //}
+            return ResponseDto<ContactReportDto>.Success(dto, 200);
         }
     }
 }

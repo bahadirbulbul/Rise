@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.User.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class PersonController : BaseController
     {
