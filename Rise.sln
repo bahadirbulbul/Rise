@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2304F9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phonebook.Shared", "Shared\Phonebook.Shared\Phonebook.Shared.csproj", "{E99D19E6-D9FF-493D-9692-68B263EEDBCA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Report", "Report", "{5A1F2EEB-E36D-4DED-A92A-75D4E0BD3FAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phonebook.Services.Report", "Services\Report\Phonebook.Services.Report\Phonebook.Services.Report.csproj", "{E02338E5-7BDA-4149-8900-F5AEE3E1817B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,10 @@ Global
 		{E99D19E6-D9FF-493D-9692-68B263EEDBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E99D19E6-D9FF-493D-9692-68B263EEDBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E99D19E6-D9FF-493D-9692-68B263EEDBCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E02338E5-7BDA-4149-8900-F5AEE3E1817B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E02338E5-7BDA-4149-8900-F5AEE3E1817B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E02338E5-7BDA-4149-8900-F5AEE3E1817B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E02338E5-7BDA-4149-8900-F5AEE3E1817B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,6 +48,8 @@ Global
 		{40D88E64-0C6C-4B5D-8A9E-8779334DEB74} = {99AAA037-73F7-46C7-8548-6FF82A718C5D}
 		{482683C6-DD9E-46F0-9F71-BB66B81B6269} = {40D88E64-0C6C-4B5D-8A9E-8779334DEB74}
 		{E99D19E6-D9FF-493D-9692-68B263EEDBCA} = {2304F919-A039-4FF1-BB6A-BBD6EA47C5AC}
+		{5A1F2EEB-E36D-4DED-A92A-75D4E0BD3FAC} = {99AAA037-73F7-46C7-8548-6FF82A718C5D}
+		{E02338E5-7BDA-4149-8900-F5AEE3E1817B} = {5A1F2EEB-E36D-4DED-A92A-75D4E0BD3FAC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7FA1982-4162-48A7-9F29-1A9B519CFC2D}

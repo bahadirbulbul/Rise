@@ -1,2 +1,3 @@
 Services
-userAPI :	5001
+userAPI		:	5001
+reportAPI	:	5002
