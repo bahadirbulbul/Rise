@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Phonebook.Services.Report.Services
 {
-    public class ReportService
+    public class ReportService :IReportService
     {
         private readonly IMongoCollection<Models.Report> _reportCollection;
         private readonly IMapper _mapper;
@@ -24,10 +24,10 @@ namespace Phonebook.Services.Report.Services
             _mapper = mapper;
         }
 
-        //public async Task<ResponseDto<List<ReportDto>>> GetAllAsync()
-        //{
-            //var reports = await _reportCollection.Find(Models.Report => true).ToListAsync();
-            //return ResponseDto<List<ReportDto>>.Success(_mapper.Map<List<ReportDto>>(reports), 200);
-        //}
+        public async Task<ResponseDto<List<ReportDto>>> GetAllAsync()
+        {
+            var reports = await _reportCollection.Find(Report => true).ToListAsync();
+            return ResponseDto<List<ReportDto>>.Success(_mapper.Map<List<ReportDto>>(reports), 200);
+        }
     }
 }

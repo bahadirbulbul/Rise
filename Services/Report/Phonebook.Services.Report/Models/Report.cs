@@ -13,7 +13,7 @@ namespace Phonebook.Services.Report.Models
         public string UUID { get; set; }
 
         [BsonRepresentation(MongoDB.Bson.BsonType.DateTime)]
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public string Status { get; set; }
     }
 }

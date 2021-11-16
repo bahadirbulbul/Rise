@@ -37,6 +37,7 @@ namespace Phonebook.Services.User
             {
                 return s.GetRequiredService<IOptions<DBSettings>>().Value;
             });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -1,3 +1,4 @@
 Services
-userAPI		:	5001
-reportAPI	:	5002
+	userAPI		:	5001
+	reportAPI	:	5002
+Gateway		:	5000

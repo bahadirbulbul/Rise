@@ -14,10 +14,8 @@ namespace Phonebook.Services.Report.Models
 
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string ReportID { get; set; }
-
         public string Location { get; set; }
         public string PersonCount { get; set; }
         public string GSMCount{ get; set; }
-
     }
 }
