@@ -1,0 +1,33 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "person.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/services/user/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamSchema": "http"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "report.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/services/report/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamSchema": "http"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://gateway.api"
+  }
+}
