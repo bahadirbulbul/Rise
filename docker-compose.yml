@@ -3,11 +3,11 @@ services:
   persondb:
     image: mongo
     ports:
-     - "27017"
+     - "27027"
   reportdb:
     image: mongo
     ports:
-     - "27018"
+     - "27028"
   rabbitmq:
     image: rabbitmq:3.9.9-management
   user.api:
