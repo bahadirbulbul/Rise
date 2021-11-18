@@ -12,7 +12,6 @@ namespace Phonebook.Services.Report.Mappings
         public Mapping()
         {
             CreateMap<Models.Report, ReportDto>().ReverseMap();
-            CreateMap<Models.ReportDetail, ReportDetailDto>().ReverseMap();
 
         }
     }

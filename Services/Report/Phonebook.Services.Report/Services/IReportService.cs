@@ -11,5 +11,6 @@ namespace Phonebook.Services.Report.Services
     {
         Task<ResponseDto<List<ReportDto>>> GetAllAsync();
         Task<ResponseDto<ReportDto>> CreateAsync();
+        Task<ResponseDto<ReportDto>> UpdateAsync(Models.Report model);
     }
 }

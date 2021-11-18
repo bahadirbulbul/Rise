@@ -3,7 +3,10 @@ using MongoDB.Driver;
 using Phonebook.Services.User.Dtos;
 using Phonebook.Services.User.Models;
 using Phonebook.Services.User.Settings;
+using Phonebook.Shared;
 using Phonebook.Shared.Dtos;
+using Phonebook.Shared.Enums;
+using Phonebook.Shared.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,38 +80,55 @@ namespace Phonebook.Services.User.Services
             }
         }
 
-        public async Task<ResponseDto<ContactReportDto>> PrepareReportData()
+        public async Task<List<PrepareReportDataCommand>> PrepareReportData()
         {
             //DTO rapor datası ile doldurulacak.
-            var dto = new ContactReportDto();
+            //var dto = new PrepareReportDataCommand
+            //{
+            //    GSMCount = 1,
+            //    Location = "ankara",
+            //    PersonCount = 4
+            //};
 
             //Konum bilgisi bulunan iletişim bilgileri.
-            var list = await _personContactCollection.Find(s => s.ContactType == "Location").ToListAsync();
+            var list = await _personContactCollection.Find(_ => true).ToListAsync();
+            var report = from T in (
+                          (from P in list
+                           where
+                             P.ContactType == Helper.GetDisplayName(ContactTypeEnum.Location)
+                           group P by new
+                           {
+                               P.Description,
+                               P.PersonID
+                           } into g
+                           select new
+                           {
+                               g.Key.Description,
+                               KisiSayisi = g.Count(p => p.PersonID != null),
+                               g.Key.PersonID,
+                               GSMCount =
+                               (from PC in list
+                                where
+                                 PC.ContactType == Helper.GetDisplayName(ContactTypeEnum.GSM) &&
+                                 PC.PersonID == g.Key.PersonID
+                                select new
+                                {
+                                    PC
+                                }).Count()
+                           }))
+                         group T by new
+                         {
+                             T.Description
+                         } into g
+                         select new PrepareReportDataCommand
+                         {
+                             GSMCount = g.Sum(p => p.GSMCount),
+                             PersonCount = g.Sum(p => p.KisiSayisi),
+                             Location = g.Key.Description
+                         };
 
-            var userCount = list.Select(s => s.PersonID).Distinct().Count();
-            var GSMCount = list.Where(s => s.ContactType == "GSM").Count();
-            //var result = _personContactCollection.Aggregate()
-            //            .Group(
-            //                x => x.ContactType == "Konum",
-            //                g => new
-            //                {
-            //                    Result = g.Sum(
-            //                               x => x.ContactType == "GSM".Count()
-            //                               ).Max(),
 
-            //                    g.Select(y => y.ContactType == "GSM").ToList().Count()
-            //                }
-            //            ).ToList();
-
-            //result.ForEach(doc => Console.WriteLine(doc.ToJson()));
-
-
-
-            //foreach (var item in collection)
-            //{
-
-            //}
-            return ResponseDto<ContactReportDto>.Success(dto, 200);
+            return report.ToList();
         }
     }
 }

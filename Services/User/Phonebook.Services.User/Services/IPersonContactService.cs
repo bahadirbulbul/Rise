@@ -1,5 +1,6 @@
 ﻿using Phonebook.Services.User.Dtos;
 using Phonebook.Shared.Dtos;
+using Phonebook.Shared.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace Phonebook.Services.User.Services
         Task<ResponseDto<PersonContactDto>> DeleteByIdAsync(string uuid);
         Task<ResponseDto<CreatePersonContactDto>> CreateAsync(CreatePersonContactDto personContact);
         Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUID(string personUUID);
-        Task<ResponseDto<ContactReportDto>> PrepareReportData();
+        Task<List<PrepareReportDataCommand>> PrepareReportData();
     }
 }

@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  persondb:
+    image: mongo
+    ports:
+     - "27017"
+  reportdb:
+    image: mongo
+    ports:
+     - "27018"
+  rabbitmq:
+    image: rabbitmq:3.9.9-management
+  user.api:
+    image: user_api_image
+    build:
+      context: .
+      dockerfile: Services/User/Phonebook.Services.User/Dockerfile
+  report.api:
+    image: report
+    build:
+      context: .
+      dockerfile: Services/Report/Phonebook.Services.Report/Dockerfile
+  gateway.api:
+    image: gateway_api_image
+    build:
+      context: .
+      dockerfile: Gateways/Phonebook.Gateway/Dockerfile
+
+volumes:
+  persondb_volume:
+  reportdb_volume:

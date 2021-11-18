@@ -11,5 +11,6 @@ namespace Phonebook.Services.Report.Dtos
         public string Location { get; set; }
         public int PersonCount { get; set; }
         public int GSMCount { get; set; }
+        public string Path { get; set; }
     }
 }

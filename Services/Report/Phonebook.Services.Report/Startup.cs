@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Phonebook.Services.Report.Consumers;
 using Phonebook.Services.Report.Services;
 using Phonebook.Services.Report.Settings;
 using System;
@@ -32,12 +33,19 @@ namespace Phonebook.Services.Report
             #region RabbitMQ
             services.AddMassTransit(s =>
             {
+                s.AddConsumer<PrepareReportDataCommandConsumer>();
+
                 s.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
                     {
                         host.Username("guest");
                         host.Password("guest");
+                    });
+
+                    cfg.ReceiveEndpoint("report-service", e =>
+                    {
+                        e.ConfigureConsumer<PrepareReportDataCommandConsumer>(context);
                     });
                 });
             });
@@ -46,7 +54,6 @@ namespace Phonebook.Services.Report
 
             #region DI
             services.AddScoped<IReportService, ReportService>();
-            services.AddScoped<IReportDetailService, ReportDetailService>();
             #endregion
 
             #region DB

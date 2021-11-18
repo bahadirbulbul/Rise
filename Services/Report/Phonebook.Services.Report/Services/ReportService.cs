@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using Phonebook.Services.Report.Dtos;
 using Phonebook.Services.Report.Settings;
+using Phonebook.Shared;
 using Phonebook.Shared.Dtos;
 using Phonebook.Shared.Enums;
 using System;
@@ -36,15 +37,19 @@ namespace Phonebook.Services.Report.Services
             var model = new Models.Report
             {
                 Date = DateTime.Now,
-                Status = ReportStatusEnum.Hazırlanıyor.ToString()
+                Status = Helper.GetDisplayName(ReportStatusEnum.Hazırlanıyor)
             };
             await _reportCollection.InsertOneAsync(model);
 
-            var reportCreateResult = await _reportCollection.FindAsync(s => s.Date == model.Date);
+            return ResponseDto<ReportDto>.Success(_mapper.Map<ReportDto>(model), 200);
+        }
+
+        public async Task<ResponseDto<ReportDto>> UpdateAsync(Models.Report model)
+        {
+            var reportCreateResult = await _reportCollection.ReplaceOneAsync(e => e.UUID == model.UUID, model);
 
             return ResponseDto<ReportDto>.Success(_mapper.Map<ReportDto>(reportCreateResult), 200);
         }
-
 
     }
 }

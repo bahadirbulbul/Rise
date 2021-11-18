@@ -15,5 +15,6 @@ namespace Phonebook.Services.Report.Models
         [BsonRepresentation(MongoDB.Bson.BsonType.DateTime)]
         public DateTime Date { get; set; }
         public string Status { get; set; }
+        public string Path { get; set; }
     }
 }

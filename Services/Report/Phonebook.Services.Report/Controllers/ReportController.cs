@@ -39,7 +39,8 @@ namespace Phonebook.Services.Report.Controllers
             var sendEndpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:report-service"));
             var reportRequest = new PrepareReportDataCommand
             {
-                CreatedDate = createdReportDto.Data.Date,
+                UUID = createdReportDto.Data.UUID,
+                Date = createdReportDto.Data.Date,
                 Status = createdReportDto.Data.Status
             };
             await sendEndpoint.Send<PrepareReportDataCommand>(reportRequest);

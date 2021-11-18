@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  persondb:
+    container_name: persondb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - persondb_volume:/data/db
+  reportdb:
+    container_name: reportdb
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - reportdb_volume:/data/db
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  user.api:
+    container_name: user.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DatabaseSettings:ConnectionString=mongodb://persondb:27017
+    ports:
+      - "5001:80"
+    depends_on:
+      - persondb
+  report.api:
+    container_name: report.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMQUrl=rabbitmq
+      - DatabaseSettings:ConnectionString=mongodb://reportdb:27017
+    ports:
+      - "5002:80"
+    depends_on:
+      - reportdb
+  gateway.api:
+    container_name: gateway.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5000:80"

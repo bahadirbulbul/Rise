@@ -52,7 +52,7 @@ namespace Phonebook.Services.User.Controllers
         public async Task<IActionResult> GetReportData()
         {
             var reportData = await _personContactService.PrepareReportData();
-            return CreateActionResultInstance(reportData);
+            return Ok(reportData);
         }
     }
 }
