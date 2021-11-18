@@ -24,7 +24,7 @@ services:
     container_name: user.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - DatabaseSettings:ConnectionString=mongodb://persondb
+      - DBSettings__ConnectionString=mongodb://persondb
     ports:
       - "5001:80"
     depends_on:
@@ -34,7 +34,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - RabbitMQUrl=rabbitmq
-      - DatabaseSettings:ConnectionString=mongodb://reportdb
+      - DBSettings__ConnectionString=mongodb://reportdb
     ports:
       - "5002:80"
     depends_on:
