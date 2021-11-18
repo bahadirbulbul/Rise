@@ -4,14 +4,14 @@ services:
     container_name: persondb
     restart: always
     ports:
-      - "27017:27017"
+      - "27027:27017"
     volumes:
       - persondb_volume:/data/db
   reportdb:
     container_name: reportdb
     restart: always
     ports:
-      - "27018:27017"
+      - "27028:27017"
     volumes:
       - reportdb_volume:/data/db
   rabbitmq:
@@ -24,7 +24,7 @@ services:
     container_name: user.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - DatabaseSettings:ConnectionString=mongodb://persondb:27017
+      - DatabaseSettings:ConnectionString=mongodb://persondb
     ports:
       - "5001:80"
     depends_on:
@@ -34,7 +34,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - RabbitMQUrl=rabbitmq
-      - DatabaseSettings:ConnectionString=mongodb://reportdb:27017
+      - DatabaseSettings:ConnectionString=mongodb://reportdb
     ports:
       - "5002:80"
     depends_on:
