@@ -1,12 +1,10 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using Phonebook.Shared;
 
 namespace Phonebook.Services.User.Models
 {
-    public class PersonContact
+    public class PersonContact : BaseEntity
     {
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string UUID { get; set; }
 
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string PersonID { get; set; }

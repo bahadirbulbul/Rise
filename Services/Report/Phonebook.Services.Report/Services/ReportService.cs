@@ -1,34 +1,29 @@
 ﻿using AutoMapper;
-using MongoDB.Driver;
 using Phonebook.Services.Report.Dtos;
-using Phonebook.Services.Report.Settings;
 using Phonebook.Shared;
 using Phonebook.Shared.Dtos;
 using Phonebook.Shared.Enums;
+using Phonebook.Shared.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Phonebook.Services.Report.Services
 {
     public class ReportService : IReportService
     {
-        private readonly IMongoCollection<Models.Report> _reportCollection;
         private readonly IMapper _mapper;
+        private readonly IRepository<Models.Report> _repository;
 
-        public ReportService(IMapper mapper, IDBSettings dbSettings)
+        public ReportService(IRepository<Models.Report> repository, IMapper mapper)
         {
-            var client = new MongoClient(dbSettings.ConnectionString);
-            var db = client.GetDatabase(dbSettings.DatabaseName);
-
-            _reportCollection = db.GetCollection<Models.Report>(dbSettings.ReportCollectionName);
+            _repository = repository;
             _mapper = mapper;
         }
 
         public async Task<ResponseDto<List<ReportDto>>> GetAllAsync()
         {
-            var reports = await _reportCollection.Find(Report => true).ToListAsync();
+            var reports = await _repository.GetListWithFiltersAsync(x => true);
             return ResponseDto<List<ReportDto>>.Success(_mapper.Map<List<ReportDto>>(reports), 200);
         }
 
@@ -39,14 +34,14 @@ namespace Phonebook.Services.Report.Services
                 Date = DateTime.Now,
                 Status = Helper.GetDisplayName(ReportStatusEnum.Hazırlanıyor)
             };
-            await _reportCollection.InsertOneAsync(model);
+            await _repository.AddAsync(model);
 
             return ResponseDto<ReportDto>.Success(_mapper.Map<ReportDto>(model), 200);
         }
 
         public async Task<ResponseDto<ReportDto>> UpdateAsync(Models.Report model)
         {
-            var reportCreateResult = await _reportCollection.ReplaceOneAsync(e => e.UUID == model.UUID, model);
+            var reportCreateResult = await _repository.UpdateAsync(model, e => e.UUID == model.UUID);
 
             return ResponseDto<ReportDto>.Success(_mapper.Map<ReportDto>(reportCreateResult), 200);
         }

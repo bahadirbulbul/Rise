@@ -1,18 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Phonebook.Services.User.Services;
-using Phonebook.Services.User.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Phonebook.Shared.Repositories;
+using Phonebook.Shared.Settings;
 
 namespace Phonebook.Services.User
 {
@@ -30,13 +24,11 @@ namespace Phonebook.Services.User
         {
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IPersonContactService, PersonContactService>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddAutoMapper(typeof(Startup));
-            services.Configure<DBSettings>(Configuration.GetSection("DBSettings"));
-            services.AddSingleton<IDBSettings>(s =>
-            {
-                return s.GetRequiredService<IOptions<DBSettings>>().Value;
-            });
+
+            services.Configure<DBSettings>(Configuration.GetSection(nameof(DBSettings)));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
