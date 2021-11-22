@@ -6,6 +6,7 @@ using Phonebook.Shared.Enums;
 using Phonebook.Shared.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Phonebook.Services.Report.Services
@@ -24,7 +25,8 @@ namespace Phonebook.Services.Report.Services
         public async Task<ResponseDto<List<ReportDto>>> GetAllAsync()
         {
             var reports = await _repository.GetListWithFiltersAsync(x => true);
-            return ResponseDto<List<ReportDto>>.Success(_mapper.Map<List<ReportDto>>(reports), 200);
+
+            return ResponseDto<List<ReportDto>>.Success(_mapper.Map<List<Models.Report>, List<ReportDto>>(reports), 200);
         }
 
         public async Task<ResponseDto<ReportDto>> CreateAsync()
@@ -41,7 +43,7 @@ namespace Phonebook.Services.Report.Services
 
         public async Task<ResponseDto<ReportDto>> UpdateAsync(Models.Report model)
         {
-            var reportCreateResult = await _repository.UpdateAsync(model, e => e.UUID == model.UUID);
+            var reportCreateResult = await _repository.UpdateAsync(model.UUID, model);
 
             return ResponseDto<ReportDto>.Success(_mapper.Map<ReportDto>(reportCreateResult), 200);
         }

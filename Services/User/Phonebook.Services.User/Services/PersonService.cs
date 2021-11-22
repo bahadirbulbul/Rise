@@ -25,7 +25,7 @@ namespace Phonebook.Services.User.Services
         //Rehberdeki kişilerin listelenmesi
         public async Task<ResponseDto<List<PersonDto>>> GetAllAsync()
         {
-            var persons = await _repository.GetListWithFiltersAsync(Person => true);
+            var persons = await _repository.GetListWithFiltersAsync(x => true);
             return ResponseDto<List<PersonDto>>.Success(_mapper.Map<List<PersonDto>>(persons), 200);
         }
 
