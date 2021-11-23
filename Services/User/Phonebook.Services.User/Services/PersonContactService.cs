@@ -50,7 +50,7 @@ namespace Phonebook.Services.User.Services
 
             if (personContacts == null)
             {
-                return ResponseDto<PersonContactDto>.Fail(personUUID + "ID'i kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
+                return ResponseDto<PersonContactDto>.Fail(personUUID + " ID'li kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
             }
             foreach (var contact in personContacts)
             {
@@ -59,24 +59,16 @@ namespace Phonebook.Services.User.Services
 
             return ResponseDto<PersonContactDto>.Success(200);
         }
-        public async Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUID(string personUUID)
+
+        public async Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUIDAsync(string personUUID)
         {
-            try
+            var personContacts = await _repository.GetListWithFiltersAsync(s => s.PersonID == personUUID);
+
+            if (personContacts == null)
             {
-                var personContacts = await _repository.GetListWithFiltersAsync(s => s.PersonID == personUUID);
-
-                if (personContacts == null)
-                {
-                    return ResponseDto<List<PersonContactDto>>.Fail(personUUID + "ID'i kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
-                }
-
-                return ResponseDto<List<PersonContactDto>>.Success(_mapper.Map<List<PersonContactDto>>(personContacts), 200);
+                return ResponseDto<List<PersonContactDto>>.Fail(personUUID + " ID'li kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
             }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            return ResponseDto<List<PersonContactDto>>.Success(_mapper.Map<List<PersonContact>, List<PersonContactDto>>(personContacts), 200);
         }
 
         public async Task<List<PrepareReportDataCommand>> PrepareReportData()

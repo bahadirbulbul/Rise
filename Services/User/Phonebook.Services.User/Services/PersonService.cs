@@ -48,7 +48,7 @@ namespace Phonebook.Services.User.Services
             var personDTO = _mapper.Map<PersonDto>(person);
 
             //person'a ait iletişim bilgilerini getir. eğer iletişim bilgisi yoksa boş liste ata; varsa doldur.
-            var personContacts = await _personContactService.GetAllByPersonUUID(uuid);
+            var personContacts = await _personContactService.GetAllByPersonUUIDAsync(uuid);
             if (personContacts.StatusCode != 200)
                 personDTO.PersonContacts = new List<PersonContactDto>();
             else

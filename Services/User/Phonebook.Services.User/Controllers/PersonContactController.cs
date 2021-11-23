@@ -22,9 +22,9 @@ namespace Phonebook.Services.User.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllByPersonUUID(string uuid)
+        public async Task<IActionResult> GetAllByPersonUUIDAsync(string uuid)
         {
-            var contacts = await _personContactService.GetAllByPersonUUID(uuid);
+            var contacts = await _personContactService.GetAllByPersonUUIDAsync(uuid);
             return CreateActionResultInstance(contacts);
         }
 
