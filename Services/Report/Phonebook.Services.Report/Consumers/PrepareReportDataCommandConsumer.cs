@@ -1,18 +1,15 @@
 ﻿using MassTransit;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using Phonebook.Services.Report.Dtos;
 using Phonebook.Services.Report.Services;
 using Phonebook.Shared;
 using Phonebook.Shared.Enums;
 using Phonebook.Shared.Messages;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Text.Json;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Phonebook.Services.Report.Consumers
 {
