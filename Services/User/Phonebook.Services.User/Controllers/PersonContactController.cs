@@ -22,7 +22,7 @@ namespace Phonebook.Services.User.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllByPersonUUIDAsync(string uuid)
+        public async Task<IActionResult> GetAllByPersonUUID(string uuid)
         {
             var contacts = await _personContactService.GetAllByPersonUUIDAsync(uuid);
             return CreateActionResultInstance(contacts);
@@ -48,6 +48,7 @@ namespace Phonebook.Services.User.Controllers
             var response = await _personContactService.DeleteAllByPersonIdAsync(personUUID);
             return CreateActionResultInstance(response);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetReportData()
         {

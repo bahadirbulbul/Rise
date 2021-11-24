@@ -50,7 +50,7 @@ namespace Phonebook.Services.User.Test.ServicesTests
             {
                 ContactType = Helper.GetDisplayName(ContactTypeEnum.Location),
                 Description = "Ankara",
-                PersonID = "asd2fdsfdfg",
+                PersonID = "1",
                 UUID = "asdad34sdfsd"
             };
 
@@ -59,7 +59,7 @@ namespace Phonebook.Services.User.Test.ServicesTests
                 CompanyName = "Rise Tech",
                 Name = "Ali Veli",
                 Surname = "Bülbül",
-                UUID = "asd2fdsfdfg",
+                UUID = "2",
                 PersonContacts = new List<PersonContact> { _contact }
             };
 
@@ -109,7 +109,7 @@ namespace Phonebook.Services.User.Test.ServicesTests
         }
 
         [Theory]
-        [InlineData("asd2fdsfdfg")]
+        [InlineData("1")]
         public async Task GetByIdAsync_PersonExist_ReturnPersonAndContacts(string UUID)
         {
             _personMockRepository.Setup(s => s.GetAsync(s => s.UUID == UUID)).Returns(Task.FromResult(_person));
@@ -135,7 +135,7 @@ namespace Phonebook.Services.User.Test.ServicesTests
         }
 
         [Theory]
-        [InlineData("asd2fdsfdfg")]
+        [InlineData("1")]
         public async Task DeleteByIdAsync_PersonExist_ReturnSuccess(string UUID)
         {
             _personMockRepository.Setup(s => s.GetAsync(s => s.UUID == UUID)).Returns(Task.FromResult(_person));

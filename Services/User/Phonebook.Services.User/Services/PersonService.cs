@@ -14,7 +14,6 @@ namespace Phonebook.Services.User.Services
         private readonly IPersonContactService _personContactService;
         private readonly IRepository<Person> _repository;
 
-
         public PersonService(IMapper mapper,IPersonContactService personContactService, IRepository<Person> repository)
         {
             _repository = repository;
