@@ -13,7 +13,7 @@ namespace Phonebook.Services.User.Services
         Task<ResponseDto<PersonContactDto>> DeleteAllByPersonIdAsync(string personUUID);
         Task<ResponseDto<PersonContactDto>> DeleteByIdAsync(string uuid);
         Task<ResponseDto<CreatePersonContactDto>> CreateAsync(CreatePersonContactDto personContact);
-        Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUID(string personUUID);
+        Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUIDAsync(string personUUID);
         Task<List<PrepareReportDataCommand>> PrepareReportData();
     }
 }

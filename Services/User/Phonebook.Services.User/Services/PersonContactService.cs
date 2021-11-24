@@ -2,11 +2,11 @@
 using MongoDB.Driver;
 using Phonebook.Services.User.Dtos;
 using Phonebook.Services.User.Models;
-using Phonebook.Services.User.Settings;
 using Phonebook.Shared;
 using Phonebook.Shared.Dtos;
 using Phonebook.Shared.Enums;
 using Phonebook.Shared.Messages;
+using Phonebook.Shared.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,68 +16,59 @@ namespace Phonebook.Services.User.Services
 {
     public class PersonContactService : IPersonContactService
     {
-        private readonly IMongoCollection<PersonContact> _personContactCollection;
         private readonly IMapper _mapper;
+        private readonly IRepository<PersonContact> _repository;
 
-        public PersonContactService(IMapper mapper, IDBSettings dbSettings)
+        public PersonContactService(IRepository<PersonContact> repository, IMapper mapper)
         {
-            var client = new MongoClient(dbSettings.ConnectionString);
-            var db = client.GetDatabase(dbSettings.DatabaseName);
-
-            _personContactCollection = db.GetCollection<PersonContact>(dbSettings.PersonContactCollectionName);
+            _repository = repository;
             _mapper = mapper;
         }
         public async Task<ResponseDto<CreatePersonContactDto>> CreateAsync(CreatePersonContactDto personContact)
         {
-            await _personContactCollection.InsertOneAsync(_mapper.Map<PersonContact>(personContact));
+            await _repository.AddAsync(_mapper.Map<PersonContact>(personContact));
 
             return ResponseDto<CreatePersonContactDto>.Success(personContact, 200);
         }
 
         public async Task<ResponseDto<PersonContactDto>> DeleteByIdAsync(string uuid)
         {
-            var personContact = await _personContactCollection.Find<PersonContact>(x => x.UUID == uuid).FirstOrDefaultAsync();
+            var personContact = await _repository.GetAsync(x => x.UUID == uuid);
 
             if (personContact == null)
             {
                 return ResponseDto<PersonContactDto>.Fail("İletişim bilgisi bulunamadı", 404);
             }
-            var deleteResult = await _personContactCollection.DeleteOneAsync(personContact.UUID);
+            var deleteResult = await _repository.DeleteAsync(personContact.UUID);
 
             return ResponseDto<PersonContactDto>.Success(_mapper.Map<PersonContactDto>(personContact), 200);
         }
 
         public async Task<ResponseDto<PersonContactDto>> DeleteAllByPersonIdAsync(string personUUID)
         {
-            var personContants = await _personContactCollection.FindAsync(s => s.PersonID == personUUID);
+            var personContacts = await _repository.GetListWithFiltersAsync(s => s.PersonID == personUUID);
 
-            if (personContants == null)
+            if (personContacts == null)
             {
-                return ResponseDto<PersonContactDto>.Fail(personUUID + "ID'i kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
+                return ResponseDto<PersonContactDto>.Fail(personUUID + " ID'li kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
             }
-
-            var deleteResult = await _personContactCollection.DeleteManyAsync(s => s.PersonID == personUUID);
+            foreach (var contact in personContacts)
+            {
+                var deleteResult = await _repository.DeleteAsync(s => s.UUID == contact.UUID);
+            }
 
             return ResponseDto<PersonContactDto>.Success(200);
         }
-        public async Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUID(string personUUID)
+
+        public async Task<ResponseDto<List<PersonContactDto>>> GetAllByPersonUUIDAsync(string personUUID)
         {
-            try
+            var personContacts = await _repository.GetListWithFiltersAsync(s => s.PersonID == personUUID);
+
+            if (personContacts == null)
             {
-                var personContacts = await _personContactCollection.Find(s => s.PersonID == personUUID).ToListAsync();
-
-                if (personContacts == null)
-                {
-                    return ResponseDto<List<PersonContactDto>>.Fail(personUUID + "ID'i kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
-                }
-
-                return ResponseDto<List<PersonContactDto>>.Success(_mapper.Map<List<PersonContactDto>>(personContacts), 200);
+                return ResponseDto<List<PersonContactDto>>.Fail(personUUID + " ID'li kullanıcıya ait iletişim bilgieri bulunamadı.", 404);
             }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            return ResponseDto<List<PersonContactDto>>.Success(_mapper.Map<List<PersonContact>, List<PersonContactDto>>(personContacts), 200);
         }
 
         public async Task<List<PrepareReportDataCommand>> PrepareReportData()
@@ -91,7 +82,7 @@ namespace Phonebook.Services.User.Services
             //};
 
             //Konum bilgisi bulunan iletişim bilgileri.
-            var list = await _personContactCollection.Find(_ => true).ToListAsync();
+            var list = await _repository.GetListWithFiltersAsync(_ => true);
             var report = from T in (
                           (from P in list
                            where
